@@ -58,4 +58,5 @@ marketing team could act on directly.
 
 ---
 
-![Dashboard Screenshot](visuals/Bank_Marketing_Dashboard.jpg)
+<img width="930" height="527" alt="Screenshot 2026-09-04 133115" src="https://github.com/user-attachments/assets/40331482-c6b3-4f6f-a07c-bb0fd981b9bc" />
+
