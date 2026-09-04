@@ -1,42 +1,61 @@
-## 6. Business Recommendations
+# Bank Marketing Campaign — Customer Targeting & Contact Strategy Analysis
 
-**1. Prioritize customers whose previous campaign succeeded.**
-Customers with a prior campaign success subscribe at **65.4%** this time, versus
-**8.9%** for those never contacted before and **13.9%** for those whose last
-campaign failed -- nearly 6x the overall average of 11.3%. This is the single
-strongest signal in the dataset. Recommendation: before running a new campaign,
-pull the list of prior-success customers and contact them first -- they represent
-the highest-return, lowest-effort segment available.
+An end-to-end data analytics and business intelligence project analyzing a real
+bank telemarketing campaign to identify high-value customer segments, optimize
+contact strategy, and translate findings into an actionable targeting
+recommendation.
 
-**2. Target retired (60+) and student customers as core demographic segments.**
-The 60+ age band converts at **45.5%** and students (concentrated in the 18-30
-band) convert at **32.9%**, both with reliable group sizes (600-700+ each) --
-not statistical flukes. Combined analysis confirmed the 60+ effect holds
-regardless of marital status, so it's a genuine age-driven pattern, not a proxy
-for something else. Recommendation: weight campaign targeting toward these two
-groups over working-age segments (31-50), which convert at roughly a third of
-this rate (8-10%).
+---
 
-**3. Cap contact attempts at 3-4 per customer.**
-Subscribe rate declines steadily with each additional contact -- from **13.0%**
-on the first attempt down to **4-6%** by the 7th-10th attempt. Continuing to
-call past 3-4 attempts shows diminishing, and likely negative, returns (repeated
-unwanted calls may actively discourage a "yes"). Recommendation: set a hard cap
-of 3-4 attempts per customer per campaign cycle, and redirect that effort toward
-higher-probability segments instead.
+## Executive Summary
+This project analyzes **41,188 real customer contact records** from a
+Portuguese bank's term deposit telemarketing campaign. By auditing disguised
+missing data and validating cleaning decisions against actual conversion
+evidence, this pipeline isolates the customer segments and contact strategies
+that drive subscription — surfacing a segment converting at **65.38%**, nearly
+6x the campaign baseline — and delivers a concrete targeting recommendation a
+marketing team could act on directly.
 
-**4. Data limitation, stated for transparency.**
-`duration` (call length) is strongly associated with a successful outcome (553s
-average for "yes" vs 221s for "no"), but this value is only known *after* a call
-ends -- it cannot inform who to call in advance, so it was deliberately excluded
-from all targeting conclusions above. Flagging this avoids a common mistake in
-this specific dataset: using a feature that looks predictive but is actually
-just a byproduct of the outcome itself.
+---
 
-**5. Scope note.**
-This analysis focused on actionable segmentation rather than a predictive
-model, since the goal was a clear, explainable targeting recommendation a
-campaign team could act on directly -- not a black-box probability score. A
-classification model (e.g. logistic regression) could be added as a next step
-to rank individual customers, but the four recommendations above are usable
-immediately without one.
+## Tech Stack
+- **Data Engineering / ETL:** Python (`pandas`, `numpy`)
+- **Exploratory Data Analysis:** Python (`matplotlib`, `seaborn`)
+- **Statistical Analysis:** Correlation analysis, multicollinearity checks, IQR-based outlier detection
+- **Data Visualization & BI:** Power BI Desktop (DAX Measures, Data Modeling, Custom KPI Cards, Matrix Heatmaps)
+- **Notebook:** Jupyter
+
+---
+
+## Business Key Performance Indicators (KPIs)
+
+| Metric | Value | Business Relevance |
+| :--- | :--- | :--- |
+| **Overall Subscribe Rate** | **11.28%** | Campaign-wide baseline conversion rate |
+| **Total Customers Contacted** | **39,861** | Audited record count after cleaning |
+| **Previous Campaign Success Rate** | **65.38%** | Conversion rate among customers with a prior campaign success — the strongest signal found |
+| **Average Contact Attempts** | **2.57** | Mean number of contacts per customer this campaign |
+
+---
+
+## Key Insights & Business Findings
+
+1. **Data Quality — Disguised Missing Values, Not Blanket-Cleaned:**
+   - 6 columns used `"unknown"` in place of real values (`default` affected ~21% of rows). Each column was tested individually against the baseline conversion rate rather than cleaned with one rule — `default`, `education`, and `marital` showed real signal and were kept as categories; `job`, `housing`, and `loan` showed negligible signal (unknowns converted within 0.5pp of baseline) and those rows were dropped, at a cost of only ~3.2% of the data.
+   - Separately caught that `pdays` uses `999` as a placeholder for "never contacted" (96.3% of rows) — a value that would have silently corrupted any numeric analysis of that column if left untreated.
+
+2. **Previous Campaign Outcome Is the Strongest Predictor:**
+   - Customers whose previous campaign succeeded convert at **65.4%**, vs. **8.9%** for never-contacted customers and **13.9%** for previous failures — nearly 6x the overall baseline.
+
+3. **Age Outperforms Marital Status and Education as a Segmentation Driver:**
+   - The 60+ age band converts at **38–47%** across all marital statuses, while working-age bands (31–50) sit at **8–10%** regardless of marital status. Combined-segment testing showed "single" customers (14% overall) and certain education levels only appeared significant because they correlated with age/job — not independent effects.
+
+4. **Repeated Contact Shows Sharply Diminishing, Then Negative, Returns:**
+   - Subscribe rate falls from **13.0%** on the 1st contact attempt to **under 1%** past 20 attempts. Every one of the top 10 most-contacted customers (37–56 attempts) resulted in "no" — real evidence for a hard cap on repeat outreach, not just a soft guideline.
+
+5. **Call Duration Deliberately Excluded from Targeting:**
+   - Duration correlates with outcome (553s avg for "yes" vs. 221s for "no"), but it's only known after a call ends — unusable for deciding who to contact — and its extreme outliers were inconsistent (6 of the top 10 longest calls still resulted in "no").
+
+---
+
+![Dashboard Screenshot](visuals/Bank_Marketing_Dashboard.jpg)
