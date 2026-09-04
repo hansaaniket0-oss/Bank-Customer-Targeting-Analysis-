@@ -58,5 +58,4 @@ marketing team could act on directly.
 
 ---
 
-<img width="930" height="527" alt="Screenshot 2026-09-04 133115" src="https://github.com/user-attachments/assets/40331482-c6b3-4f6f-a07c-bb0fd981b9bc" />
-
+<img width="931" height="524" alt="image" src="https://github.com/user-attachments/assets/a336e303-5c5a-48e9-bb60-46febd15395e" />
